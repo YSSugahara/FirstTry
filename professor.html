@@ -3,17 +3,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <body>
 
-<h1>Cadastro de Professores</h1>
-
+<h1>Cadastro de Professor</h1>
+<!--Manter Usuario Professor - RF01-->
 <br>
 
 <div ng-app="myApp" ng-controller="myCtrl">
   <form>
     <button ng-click="doLogin()">LOGIN</button>&nbsp;&nbsp;
     <button ng-click="doLogout()">LOGOUT</button><br><br>
-    RA: <input type="text" ng-model="ra"><br><br>
     Nome: <input type="text" ng-model="nome"><br><br>
-    Curso: <input type="text" ng-model="curso"><br><br>
     <button ng-click="acessa()">ACESSA</button> &nbsp;
     <button ng-click="insere()">INSERE</button> &nbsp;
     <button ng-click="atualiza()">ATUALIZA</button> &nbsp;
@@ -25,11 +23,9 @@
   
   <br><br>
   <table cellspacing="8">
-    <tr> <th>{{hra}}</th>  <th>{{hnome}}</th>  <th>{{hcurso}}</th> </tr>
-    <tr ng-repeat="x in professores">
-      <td>{{ x.ra }}</td>
+    <tr><th>{{hnome}}</th></tr>
+    <tr ng-repeat="x in professor">
       <td>{{ x.nome }}</td>
-      <td>{{ x.curso }}</td>
     </tr>
   </table>
 
@@ -59,18 +55,22 @@ app.controller('myCtrl', function($scope, $http) {
 
   // ACESSA
   $scope.acessa = function() {
+    $scope.clear();
+      if ($scope.nome == undefined || $scope.nome.length == 0) {
+             $scope.clear();
+             $scope.mensagem = "Preencha todos os campos acima";
+             return;
+      }
      var url = "/professor";
-     if ($scope.ra != undefined) url = "/professor/" + $scope.ra;
+     if ($scope.nome != undefined) url = "/professor/" + $scope.nome;
      var request = $http({
                  "method": "get",
                  "url": url});
      request.success(function(reply) {
-        if(reply.alunos != null) {
-          $scope.hra = "RA";
+        if(reply.professor != null) {
           $scope.hnome = "Professor";
-          $scope.hcurso = "Curso";
           $scope.mensagem = "";
-          $scope.professores = reply.professores;
+          $scope.professor = reply.professor;
           } else {
               $scope.clear();
               $scope.mensagem = reply.resultado;
@@ -85,20 +85,15 @@ app.controller('myCtrl', function($scope, $http) {
 
   // INSERE
   $scope.insere = function() {
-      $scope.clear();
-      if ($scope.ra == undefined || $scope.ra.length == 0 ||
-          $scope.nome == undefined || $scope.nome.length == 0 ||
-          $scope.curso == undefined || $scope.curso.length == 0) {
+      if ($scope.nome == undefined || $scope.nome.length == 0) {
              $scope.clear();
-             $scope.mensagem = "preencha todos os campos acima";
+             $scope.mensagem = "Preencha todos os campos acima";
              return;
       }
-      var data = {"ra": $scope.ra,
-                  "nome": $scope.nome,
-                  "curso": $scope.curso};
+      var data = {"nome": $scope.nome};
       var request = $http({
                  "method": "post",
-                 "url": "/alunos",
+                 "url": "/professor",
                  "data": data});
       request.success(function(reply) {
         $scope.mensagem = reply.resultado;
@@ -113,19 +108,15 @@ app.controller('myCtrl', function($scope, $http) {
   // ATUALIZA
   $scope.atualiza = function() {
      $scope.clear();
-     if (($scope.ra == undefined || $scope.ra.length == 0) ||
-         ($scope.nome == undefined || $scope.nome.length == 0) &&
-         ($scope.curso == undefined || $scope.curso.length == 0)) {
+     if (($scope.nome == undefined || $scope.nome.length == 0)){
              $scope.clear();
-             $scope.mensagem = "preencha  RA e pelo menos um campo acima";
+             $scope.mensagem = "preencha o nome no campo acima";
              return;
      }
-     var data = {"ra": $scope.ra,
-                 "nome": $scope.nome,
-                 "curso": $scope.curso};
+     var data = {"nome": $scope.nome};
      var request = $http({
                  "method": "put",
-                 "url": "/professores/" + $scope.ra,
+                 "url": "/professor/" + $scope.nome,
                  "data": data});
      request.success(function(reply) {
          $scope.mensagem = reply.resultado;
@@ -140,14 +131,14 @@ app.controller('myCtrl', function($scope, $http) {
   // REMOVE
   $scope.remove = function() {
      $scope.clear();
-     if ($scope.ra == undefined || $scope.ra.length == 0) {
+     if ($scope.nome == undefined || $scope.nome.length == 0) {
          $scope.clear();
-         $scope.mensagem = "preencha o RA do professor";
+         $scope.mensagem = "Preencha o nome do professor";
          return;
      }
      var request = $http({
                  "method": "delete",
-                 "url": "/professores/" + $scope.ra});
+                 "url": "/professor/" + $scope.nome});
      request.success(function(reply) {
          $scope.mensagem = reply.resultado;
        }
@@ -160,9 +151,9 @@ app.controller('myCtrl', function($scope, $http) {
 
   // CLEAR
   $scope.clear = function() {
-    $scope.professores = [];
+    $scope.professor = [];
     $scope.mensagem = "";
-    $scope.hra = $scope.hnome = $scope.hcurso = "";
+    $scope.hnome = $scope.hnome = $scope.hcurso = "";
     }
   }
 );
