@@ -43,7 +43,7 @@ npm start
 E acesse o endereço:
 
 ```
-http://localhost:3000/mr.html
+http://localhost:3000/professor.html
 ```
 
 ## Referências
