@@ -282,7 +282,7 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
 	    response = {"Professor": [data]};
             res.json(response);
            }
-        }
+        } 
       )
     }
   )
@@ -292,7 +292,7 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
       var query = {"nome": req.params.nome};
       mongoOp.findOneAndUpdate(query,function(erro, query){
           if(erro) {
-            response = {"Resultado": "falha de acesso ao Data Base"};
+            response = {"Resultado": "Falha de acesso ao Data Base"};
             res.json(response);
 	  } else if (data == null) { 
              response = {"Resultado": "Professor inexistente"};
