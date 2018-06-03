@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+<h1>Cadastro de Alunos</h1>
+
+<br>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+  <form>
+    <button ng-click="doLogin()">LOGIN</button>&nbsp;&nbsp;
+    <button ng-click="doLogout()">LOGOUT</button><br><br>
+    RA: <input type="text" ng-model="ra"><br><br>
+    Nome: <input type="text" ng-model="nome"><br><br>
+    Curso: <input type="text" ng-model="curso"><br><br>
+    <button ng-click="acessa()">ACESSA</button> &nbsp;
+    <button ng-click="insere()">INSERE</button> &nbsp;
+    <button ng-click="atualiza()">ATUALIZA</button> &nbsp;
+    <button ng-click="remove()">REMOVE</button> &nbsp;
+  </form>
+
+  <br><br>
+  Resultado: {{mensagem}}
+  
+  <br><br>
+  <table cellspacing="8">
+    <tr> <th>{{hra}}</th>  <th>{{hnome}}</th>  <th>{{hcurso}}</th> </tr>
+    <tr ng-repeat="x in alunos">
+      <td>{{ x.ra }}</td>
+      <td>{{ x.nome }}</td>
+      <td>{{ x.curso }}</td>
+    </tr>
+  </table>
+
+</div>
+
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+  // LOGIN
+  $scope.doLogin = function() {
+     window.open("/authentication", "_blank");
+  }
+
+  // LOGOUT
+  $scope.doLogout = function() {
+     $scope.clear();
+     var request = $http({
+                 "method": "delete",
+                 "url": "/authentication"});
+     request.success(function(reply) {
+         $scope.mensagem = reply.resultado;
+     }
+   );
+ };
+
+
+  // ACESSA
+  $scope.acessa = function() {
+     var url = "/alunos";
+     if ($scope.ra != undefined) url = "/alunos/" + $scope.ra;
+     var request = $http({
+                 "method": "get",
+                 "url": url});
+     request.success(function(reply) {
+        if(reply.alunos != null) {
+          $scope.hra = "RA";
+          $scope.hnome = "Aluno";
+          $scope.hcurso = "Curso";
+          $scope.mensagem = "";
+          $scope.alunos = reply.alunos;
+          } else {
+              $scope.clear();
+              $scope.mensagem = reply.resultado;
+            }
+         }
+      );
+      request.error(function(reply) {
+         alert("Falha na requisicao");
+      }
+    );
+  };
+
+  // INSERE
+  $scope.insere = function() {
+      $scope.clear();
+      if ($scope.ra == undefined || $scope.ra.length == 0 ||
+          $scope.nome == undefined || $scope.nome.length == 0 ||
+          $scope.curso == undefined || $scope.curso.length == 0) {
+             $scope.clear();
+             $scope.mensagem = "preencha todos os campos acima";
+             return;
+      }
+      var data = {"ra": $scope.ra,
+                  "nome": $scope.nome,
+                  "curso": $scope.curso};
+      var request = $http({
+                 "method": "post",
+                 "url": "/alunos",
+                 "data": data});
+      request.success(function(reply) {
+        $scope.mensagem = reply.resultado;
+        }
+      );
+      request.error(function(reply) {
+        alert("Falha na requisicao");
+      }
+    );
+  };
+
+  // ATUALIZA
+  $scope.atualiza = function() {
+     $scope.clear();
+     if (($scope.ra == undefined || $scope.ra.length == 0) ||
+         ($scope.nome == undefined || $scope.nome.length == 0) &&
+         ($scope.curso == undefined || $scope.curso.length == 0)) {
+             $scope.clear();
+             $scope.mensagem = "preencha  RA e pelo menos um campo acima";
+             return;
+     }
+     var data = {"ra": $scope.ra,
+                 "nome": $scope.nome,
+                 "curso": $scope.curso};
+     var request = $http({
+                 "method": "put",
+                 "url": "/alunos/" + $scope.ra,
+                 "data": data});
+     request.success(function(reply) {
+         $scope.mensagem = reply.resultado;
+         }
+      );
+      request.error(function(reply) {
+        alert("Falha na requisicao");
+       }
+    );
+  };
+
+  // REMOVE
+  $scope.remove = function() {
+     $scope.clear();
+     if ($scope.ra == undefined || $scope.ra.length == 0) {
+         $scope.clear();
+         $scope.mensagem = "preencha o RA do aluno";
+         return;
+     }
+     var request = $http({
+                 "method": "delete",
+                 "url": "/alunos/" + $scope.ra});
+     request.success(function(reply) {
+         $scope.mensagem = reply.resultado;
+       }
+     );
+     request.error(function(reply) {
+        alert("Falha na requisicao");
+       }
+     );
+   };
+
+  // CLEAR
+  $scope.clear = function() {
+    $scope.alunos = [];
+    $scope.mensagem = "";
+    $scope.hra = $scope.hnome = $scope.hcurso = "";
+    }
+  }
+);
+</script> 
+
+</body>
+</html>
