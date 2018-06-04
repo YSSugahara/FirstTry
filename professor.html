@@ -12,6 +12,7 @@
     <button ng-click="doLogin()">LOGIN</button>&nbsp;&nbsp;
     <button ng-click="doLogout()">LOGOUT</button><br><br>
     Nome: <input type="text" ng-model="nome"><br><br>
+    Turma: <input type="text" ng-model="turma"><br><br>
     <button ng-click="acessa()">ACESSA</button> &nbsp;
     <button ng-click="insere()">INSERE</button> &nbsp;
     <button ng-click="atualiza()">ATUALIZA</button> &nbsp;
@@ -23,9 +24,10 @@
   
   <br><br>
   <table cellspacing="8">
-    <tr><th>{{hnome}}</th></tr>
+    <tr><th>{{hnome}}</th> <th>{{hturma}}</th></tr>
     <tr ng-repeat="x in professor">
       <td>{{ x.nome }}</td>
+      <td>{{ x.turma }}</td>
     </tr>
   </table>
 
@@ -56,7 +58,8 @@ app.controller('myCtrl', function($scope, $http) {
   // ACESSA
   $scope.acessa = function() {
     $scope.clear();
-      if ($scope.nome == undefined || $scope.nome.length == 0) {
+      if ($scope.nome == undefined || $scope.nome.length == 0 ||
+          $scope.turma == undefined || $scope.turma.length == 0 ) {
              $scope.clear();
              $scope.mensagem = "Preencha todos os campos acima";
              return;
@@ -69,6 +72,7 @@ app.controller('myCtrl', function($scope, $http) {
      request.success(function(reply) {
         if(reply.professor != null) {
           $scope.hnome = "Professor";
+          $scope.hturma = "Turma";
           $scope.mensagem = "";
           $scope.professor = reply.professor;
           } else {
@@ -85,12 +89,14 @@ app.controller('myCtrl', function($scope, $http) {
 
   // INSERE
   $scope.insere = function() {
-      if ($scope.nome == undefined || $scope.nome.length == 0) {
+      if ($scope.nome == undefined || $scope.nome.length == 0
+          $scope.turma == undefined || $scope.turma.length == 0){
              $scope.clear();
              $scope.mensagem = "Preencha todos os campos acima";
              return;
       }
-      var data = {"nome": $scope.nome};
+      var data = {"nome": $scope.nome,
+                  "turma": $scope.turma};
       var request = $http({
                  "method": "post",
                  "url": "/professor",
@@ -108,12 +114,14 @@ app.controller('myCtrl', function($scope, $http) {
   // ATUALIZA
   $scope.atualiza = function() {
      $scope.clear();
-     if (($scope.nome == undefined || $scope.nome.length == 0)){
+     if (($scope.nome == undefined || $scope.nome.length == 0) &&
+          ($scope.turma == undefined || $scope.turma.length == 0 )){
              $scope.clear();
-             $scope.mensagem = "preencha o nome no campo acima";
+             $scope.mensagem = "Preencha os campos acima";
              return;
      }
-     var data = {"nome": $scope.nome};
+     var data = {"nome": $scope.nome,
+                 "turma": $scope.turma};
      var request = $http({
                  "method": "put",
                  "url": "/professor/" + $scope.nome,
@@ -153,7 +161,7 @@ app.controller('myCtrl', function($scope, $http) {
   $scope.clear = function() {
     $scope.professor = [];
     $scope.mensagem = "";
-    $scope.hnome = $scope.hnome = $scope.hcurso = "";
+    $scope.hnome = $scope.hturma = "";
     }
   }
 );

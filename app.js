@@ -88,9 +88,9 @@ router.route('/alunos')   // operacoes sobre todos os alunos
      var response = {};
      mongoOp.find({}, function(erro, data) {
        if(erro)
-          response = {"resultado": "Falha de acesso ao BD"};
+          response = {"Resultado": "Falha de acesso ao BD"};
         else
-          response = {"alunos": data};
+          response = {"Alunos": data};
           res.json(response);
         }
       )
@@ -109,16 +109,16 @@ router.route('/alunos')   // operacoes sobre todos os alunos
            db.curso = req.body.curso;
            db.save(function(erro) {
              if(erro) {
-                 response = {"resultado": "Falha de insercao no BD"};
+                 response = {"Resultado": "Falha de insercao no BD"};
                  res.json(response);
              } else {
-                 response = {"resultado": "Aluno inserido no BD"};
+                 response = {"Resultado": "Aluno inserido no BD"};
                  res.json(response);
               }
             }
           )
         } else {
-	    response = {"resultado": "Aluno ja existente"};
+	    response = {"Resultado": "Aluno ja existente"};
             res.json(response);
           }
         }
@@ -154,13 +154,13 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
       var data = {"nome": req.body.nome, "curso": req.body.curso};
       mongoOp.findOneAndUpdate(query, data, function(erro, data) {
           if(erro) {
-            response = {"resultado": "falha de acesso ao DB"};
+            response = {"Resultado": "Falha de acesso ao DB"};
             res.json(response);
 	  } else if (data == null) { 
-             response = {"resultado": "aluno inexistente"};
+             response = {"Resultado": "Aluno inexistente"};
              res.json(response);   
           } else {
-             response = {"resultado": "aluno atualizado no BD"};
+             response = {"Resultado": "Aluno atualizado no BD"};
              res.json(response);   
 	  }
         }
@@ -246,6 +246,7 @@ router.route('/professor')   // operacoes sobre todos os professores
         if (query == null) {
            var db = new mongoOp();
            db.nome = req.body.nome;
+           db.turma = req.body.turma;
            db.save(function(erro) {
              if(erro) {
                  response = {"Resultado": "Falha de insercao no Banco de Dados"};
@@ -271,7 +272,8 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
      if(! checkAuth(req, res)) return;
       var response = {};
       var query = {"nome": req.params.nome};
-      mongoOp.findOne(query, function(erro, data) {
+      var data = {"turma": req.body.turma};
+      mongoOp.findOneAndUpdate(query, data, function(erro, data) {
          if(erro) {
             response = {"Resultado": "Falha de acesso ao Banco de Dados"};
             res.json(response);
@@ -290,7 +292,8 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
       if(! checkAuth(req, res)) return;
       var response = {};
       var query = {"nome": req.params.nome};
-      mongoOp.findOneAndUpdate(query,function(erro, query){
+      var data = {"turma": req.body.turma};
+      mongoOp.findOneAndUpdate(query, data, function(erro, data) {
           if(erro) {
             response = {"Resultado": "Falha de acesso ao Data Base"};
             res.json(response);
