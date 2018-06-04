@@ -43,7 +43,6 @@ app.controller('myCtrl', function($scope, $http) {
   $scope.doLogin = function() {
      window.open("/authentication", "_blank");
   }
-
   // LOGOUT
   $scope.doLogout = function() {
      $scope.clear();
@@ -55,8 +54,6 @@ app.controller('myCtrl', function($scope, $http) {
      }
    );
  };
-
-
   // ACESSA
   $scope.acessa = function() {
      var url = "/alunos";
@@ -82,7 +79,6 @@ app.controller('myCtrl', function($scope, $http) {
       }
     );
   };
-
   // INSERE
   $scope.insere = function() {
       $scope.clear();
@@ -109,7 +105,6 @@ app.controller('myCtrl', function($scope, $http) {
       }
     );
   };
-
   // ATUALIZA
   $scope.atualiza = function() {
      $scope.clear();
@@ -136,7 +131,6 @@ app.controller('myCtrl', function($scope, $http) {
        }
     );
   };
-
   // REMOVE
   $scope.remove = function() {
      $scope.clear();
@@ -157,7 +151,6 @@ app.controller('myCtrl', function($scope, $http) {
        }
      );
    };
-
   // CLEAR
   $scope.clear = function() {
     $scope.alunos = [];

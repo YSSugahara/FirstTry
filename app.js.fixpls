@@ -118,7 +118,7 @@ router.route('/alunos')   // operacoes sobre todos os alunos
             }
           )
         } else {
-      response = {"Resultado": "Aluno ja existente"};
+	    response = {"Resultado": "Aluno ja existente"};
             res.json(response);
           }
         }
@@ -134,13 +134,13 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
       var query = {"ra": req.params.ra};
       mongoOp.findOne(query, function(erro, data) {
          if(erro) {
-            response = {"resultado": "falha de acesso ao BD"};
+            response = {"Resultado": "Falha de acesso ao BD"};
             res.json(response);
          } else if (data == null) {
-             response = {"resultado": "aluno inexistente"};
+             response = {"Resultado": "Aluno inexistente"};
              res.json(response);   
-   } else {
-      response = {"alunos": [data]};
+	 } else {
+	    response = {"Alunos": [data]};
             res.json(response);
            }
         }
@@ -156,13 +156,13 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
           if(erro) {
             response = {"Resultado": "Falha de acesso ao DB"};
             res.json(response);
-    } else if (data == null) { 
+	  } else if (data == null) { 
              response = {"Resultado": "Aluno inexistente"};
              res.json(response);   
           } else {
              response = {"Resultado": "Aluno atualizado no BD"};
              res.json(response);   
-    }
+	  }
         }
       )
     }
@@ -175,13 +175,13 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
          if(erro) {
             response = {"resultado": "falha de acesso ao DB"};
             res.json(response);
-   } else if (data == null) {       
+	 } else if (data == null) {	      
              response = {"resultado": "aluno inexistente"};
              res.json(response);
             } else {
               response = {"resultado": "aluno removido do BD"};
               res.json(response);
-     }
+	   }
          }
        )
      }
@@ -201,15 +201,15 @@ router.route('/authentication')   // autenticação
      var pass = req.body.pass;
      // verifica usuario e senha na base de dados
      if(user == 'eleri' && pass == 'cardozo') {
-    res.cookie('EA975', 'secret', {'maxAge': 3600000*24*5});
-    res.status(200).send('');  // OK
+	  res.cookie('EA975', 'secret', {'maxAge': 3600000*24*5});
+	  res.status(200).send('');  // OK
       } else {
-    res.status(401).send('');   // unauthorized
+	  res.status(401).send('');   // unauthorized
       }
     }
   )
   .delete(function(req, res) {
-     res.clearCookie('EA975');   // remove cookie no cliente
+     res.clearCookie('EA975');	 // remove cookie no cliente
      res.json({'resultado': 'Sucesso'});
      }
   );
@@ -217,7 +217,7 @@ router.route('/authentication')   // autenticação
 // professor.html
 router.route('/') 
  .get(function(req, res) {  // GET
-   var path = 'professor.html';
+   var path = 'index.html';
    res.header('Cache-Control', 'no-cache');
    res.sendfile(path, {"root": "./"});
    }
@@ -229,7 +229,7 @@ router.route('/professor')   // operacoes sobre todos os professores
      var response = {};
      mongoOp.find({}, function(erro, data) {
        if(erro)
-          response = {"Resultado": "Falha de acesso ao Banco de Dados"};
+          response = {"Resultado": "Falha de acesso ao BD"};
         else
           response = {"Professor": data};
           res.json(response);
@@ -240,19 +240,19 @@ router.route('/professor')   // operacoes sobre todos os professores
   .post(function(req, res) {   // POST (cria)
      if(! checkAuth(req, res)) return;
      console.log(JSON.stringify(req.body));
-     var query = {"nome": req.body.nome};
+     var query = {"ra": req.body.ra};
      var response = {};
-     mongoOp.findOne(query, function(erro, query) {
-        if (query == null) {
+     mongoOp.findOne(query, function(erro, data) {
+        if (data == null) {
            var db = new mongoOp();
+           db.ra = req.body.ra;
            db.nome = req.body.nome;
-           db.turma = req.body.turma;
            db.save(function(erro) {
              if(erro) {
-                 response = {"Resultado": "Falha de insercao no Banco de Dados"};
+                 response = {"Resultado": "Falha de insercao no BD"};
                  res.json(response);
              } else {
-                 response = {"Resultado": "Professor inserido no Banco de Dados"};
+                 response = {"Resultado": "Professor inserido no BD"};
                  res.json(response);
               }
             }
@@ -267,15 +267,14 @@ router.route('/professor')   // operacoes sobre todos os professores
   );
 
 
-router.route('/professor/:nome')   // operacoes sobre um professor (nome)
+router.route('/professor/:ra')   // operacoes sobre um aluno (RA)
   .get(function(req, res) {   // GET
      if(! checkAuth(req, res)) return;
       var response = {};
-      var query = {"nome": req.params.nome};
-      var data = {"turma": req.body.turma};
-      mongoOp.findOneAndUpdate(query, data, function(erro, data) {
+      var query = {"ra": req.params.ra};
+      mongoOp.findOne(query, function(erro, data) {
          if(erro) {
-            response = {"Resultado": "Falha de acesso ao Banco de Dados"};
+            response = {"Resultado": "Falha de acesso ao BD"};
             res.json(response);
          } else if (data == null) {
              response = {"Resultado": "Professor inexistente"};
@@ -284,24 +283,24 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
       response = {"Professor": [data]};
             res.json(response);
            }
-        } 
+        }
       )
     }
   )
   .put(function(req, res) {   // PUT (altera)
       if(! checkAuth(req, res)) return;
       var response = {};
-      var query = {"nome": req.params.nome};
-      var data = {"turma": req.body.turma};
+      var query = {"ra": req.params.ra};
+      var data = {"nome": req.body.nome};
       mongoOp.findOneAndUpdate(query, data, function(erro, data) {
           if(erro) {
-            response = {"Resultado": "Falha de acesso ao Data Base"};
+            response = {"Resultado": "Falha de acesso ao BD"};
             res.json(response);
     } else if (data == null) { 
              response = {"Resultado": "Professor inexistente"};
              res.json(response);   
           } else {
-             response = {"Resultado": "Professor atualizado no Banco de Dados"};
+             response = {"Resultado": "Professor atualizado no BD"};
              res.json(response);   
     }
         }
@@ -311,16 +310,16 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
   .delete(function(req, res) {   // DELETE (remove)
      if(! checkAuth(req, res)) return;
      var response = {};
-     var query = {"nome": req.params.nome};
+     var query = {"ra": req.params.ra};
       mongoOp.findOneAndRemove(query, function(erro, data) {
          if(erro) {
-            response = {"Resultado": "Falha de acesso ao Data Base"};
+            response = {"Resultado": "Falha de acesso ao BD"};
             res.json(response);
    } else if (data == null) {       
              response = {"Resultado": "Professor inexistente"};
              res.json(response);
             } else {
-              response = {"Resultado": "Professor removido do Banco de Dados"};
+              response = {"Resultado": "Professor removido do BD"};
               res.json(response);
      }
          }
@@ -353,4 +352,4 @@ router.route('/authentication')   // autenticação
      res.clearCookie('EA975');   // remove cookie no cliente
      res.json({'resultado': 'Sucesso'});
      }
-);
+  );
