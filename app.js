@@ -69,7 +69,7 @@ function checkAuth(req, res) {
   var key = '';
   if(cookies) key = cookies.EA975;
   if(key == 'secret') return true;
-  res.json({'resultado': 'Clique em LOGIN para continuar'});
+  res.json({'Resultado': 'Clique em LOGIN para continuar'});
   return false;
 }
 
@@ -83,12 +83,12 @@ router.route('/')
  );
 
 router.route('/alunos')   // operacoes sobre todos os alunos
- .get(function(req, res) {  // GET
+ .get(function(req, res) {  // GET (encontra)
      if(! checkAuth(req, res)) return;
      var response = {};
      mongoOp.find({}, function(erro, data) {
        if(erro)
-          response = {"Resultado": "Falha de acesso ao BD"};
+          response = {"Resultado": "Falha de acesso ao Banco de Dados"};
         else
           response = {"Alunos": data};
           res.json(response);
@@ -109,10 +109,10 @@ router.route('/alunos')   // operacoes sobre todos os alunos
            db.curso = req.body.curso;
            db.save(function(erro) {
              if(erro) {
-                 response = {"Resultado": "Falha de insercao no BD"};
+                 response = {"Resultado": "Falha de insercao no Banco de Dados"};
                  res.json(response);
              } else {
-                 response = {"Resultado": "Aluno inserido no BD"};
+                 response = {"Resultado": "Aluno inserido no Banco de Dados"};
                  res.json(response);
               }
             }
@@ -134,10 +134,10 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
       var query = {"ra": req.params.ra};
       mongoOp.findOne(query, function(erro, data) {
          if(erro) {
-            response = {"resultado": "falha de acesso ao BD"};
+            response = {"Resultado": "falha de acesso ao Banco de Dados"};
             res.json(response);
          } else if (data == null) {
-             response = {"resultado": "aluno inexistente"};
+             response = {"Resultado": "aluno inexistente"};
              res.json(response);   
    } else {
       response = {"alunos": [data]};
@@ -160,7 +160,7 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
              response = {"Resultado": "Aluno inexistente"};
              res.json(response);   
           } else {
-             response = {"Resultado": "Aluno atualizado no BD"};
+             response = {"Resultado": "Aluno atualizado no Banco de Dados"};
              res.json(response);   
     }
         }
@@ -173,19 +173,19 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
      var query = {"ra": req.params.ra};
       mongoOp.findOneAndRemove(query, function(erro, data) {
          if(erro) {
-            response = {"resultado": "falha de acesso ao DB"};
+            response = {"Resultado": "Falha de acesso ao DataBase"};
             res.json(response);
    } else if (data == null) {       
-             response = {"resultado": "aluno inexistente"};
+             response = {"Resultado": "Aluno inexistente"};
              res.json(response);
             } else {
-              response = {"resultado": "aluno removido do BD"};
+              response = {"Resultado": "Aluno removido do Banco de Dados"};
               res.json(response);
      }
          }
        )
      }
-  );
+);
 
 
 router.route('/authentication')   // autenticação
@@ -210,19 +210,11 @@ router.route('/authentication')   // autenticação
   )
   .delete(function(req, res) {
      res.clearCookie('EA975');   // remove cookie no cliente
-     res.json({'resultado': 'Sucesso'});
+     res.json({'Resultado': 'Sucesso'});
      }
-  );
+);
 
 // professor.html
-router.route('/') 
- .get(function(req, res) {  // GET
-   var path = 'professor.html';
-   res.header('Cache-Control', 'no-cache');
-   res.sendfile(path, {"root": "./"});
-   }
- );
-
 router.route('/professor')   // operacoes sobre todos os professores
  .get(function(req, res) {  // GET
      if(! checkAuth(req, res)) return;
@@ -325,32 +317,5 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
      }
          }
        )
-     }
-  );
-
-
-router.route('/authentication')   // autenticação
-  .get(function(req, res) {  // GET
-     var path = 'auth.html';
-     res.header('Cache-Control', 'no-cache');
-     res.sendfile(path, {"root": "./"});
-     }
-  )
-  .post(function(req, res) { 
-     console.log(JSON.stringify(req.body));
-     var user = req.body.user;
-     var pass = req.body.pass;
-     // verifica usuario e senha na base de dados
-     if(user == 'eleri' && pass == 'cardozo') {
-    res.cookie('EA975', 'secret', {'maxAge': 3600000*24*5});
-    res.status(200).send('');  // OK
-      } else {
-    res.status(401).send('');   // unauthorized
-      }
-    }
-  )
-  .delete(function(req, res) {
-     res.clearCookie('EA975');   // remove cookie no cliente
-     res.json({'resultado': 'Sucesso'});
      }
 );

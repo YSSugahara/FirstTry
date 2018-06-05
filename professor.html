@@ -11,7 +11,7 @@
   <form>
     <!--button ng-click="doLogin()">LOGIN</button>&nbsp;&nbsp;
     <button ng-click="doLogout()">LOGOUT</button><br><br-->
-    RA: <input type="text" ng-model="ra"><br><br>
+    Turma: <input type="text" ng-model="turma"><br><br>
     Nome: <input type="text" ng-model="nome"><br><br>
    <button ng-click="acessa()">ACESSA</button> &nbsp;
     <button ng-click="insere()">INSERE</button> &nbsp;
@@ -24,9 +24,9 @@
   
   <br><br>
   <table cellspacing="8">
-    <tr> <th>{{hra}}</th>  <th>{{hnome}}</th></tr>
+    <tr> <th>{{hturma}}</th>  <th>{{hnome}}</th></tr>
     <tr ng-repeat="x in professor">
-      <td>{{ x.ra }}</td>
+      <td>{{ x.turma }}</td>
       <td>{{ x.nome }}</td>
     </tr>
   </table>
@@ -58,16 +58,16 @@ app.controller('myCtrl', function($scope, $http) {
   // ACESSA
   $scope.acessa = function() {
      var url = "/professor";
-     if ($scope.ra != undefined) url = "/professor/" + $scope.ra;
+     if ($scope.turma != undefined) url = "/professor/" + $scope.turma;
      var request = $http({
                  "method": "get",
                  "url": url});
      request.success(function(reply) {
-        if(reply.professores != null) {
-          $scope.hra = "RA";
+        if(reply.professor != null) {
+          $scope.hturma = "Turma";
           $scope.hnome = "Professor";
           $scope.mensagem = "";
-          $scope.professores = reply.professores;
+          $scope.professor = reply.professor;
           } else {
               $scope.clear();
               $scope.mensagem = reply.resultado;
@@ -83,13 +83,13 @@ app.controller('myCtrl', function($scope, $http) {
   // INSERE
   $scope.insere = function() {
       $scope.clear();
-      if ($scope.ra == undefined || $scope.ra.length == 0 ||
+      if ($scope.turma == undefined || $scope.turma.length == 0 ||
           $scope.nome == undefined || $scope.nome.length == 0) {
              $scope.clear();
              $scope.mensagem = "Preencha todos os campos acima";
              return;
       }
-      var data = {"ra": $scope.ra,
+      var data = {"turma": $scope.turma,
                   "nome": $scope.nome};
       var request = $http({
                  "method": "post",
@@ -108,17 +108,17 @@ app.controller('myCtrl', function($scope, $http) {
   // ATUALIZA
   $scope.atualiza = function() {
      $scope.clear();
-     if (($scope.ra == undefined || $scope.ra.length == 0) ||
+     if (($scope.turma == undefined || $scope.turma.length == 0) &&
          ($scope.nome == undefined || $scope.nome.length == 0)) {
              $scope.clear();
-             $scope.mensagem = "preencha  RA e pelo menos um campo acima";
+             $scope.mensagem = "Preencha turma e pelo menos um campo acima";
              return;
      }
-     var data = {"ra": $scope.ra,
+     var data = {"turma": $scope.turma,
                  "nome": $scope.nome};
      var request = $http({
                  "method": "put",
-                 "url": "/professor/" + $scope.ra,
+                 "url": "/professor/" + $scope.turma,
                  "data": data});
      request.success(function(reply) {
          $scope.mensagem = reply.resultado;
@@ -133,14 +133,14 @@ app.controller('myCtrl', function($scope, $http) {
   // REMOVE
   $scope.remove = function() {
      $scope.clear();
-     if ($scope.ra == undefined || $scope.ra.length == 0) {
+     if ($scope.turma == undefined || $scope.turma.length == 0) {
          $scope.clear();
-         $scope.mensagem = "Preencha o RA do professor";
+         $scope.mensagem = "Preencha o turma do professor";
          return;
      }
      var request = $http({
                  "method": "delete",
-                 "url": "/professor/" + $scope.ra});
+                 "url": "/professor/" + $scope.turma});
      request.success(function(reply) {
          $scope.mensagem = reply.resultado;
        }
@@ -155,7 +155,7 @@ app.controller('myCtrl', function($scope, $http) {
   $scope.clear = function() {
     $scope.professores = [];
     $scope.mensagem = "";
-    $scope.hra = $scope.hnome = "";
+    $scope.hturma = $scope.hnome = "";
     }
   }
 );

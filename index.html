@@ -68,12 +68,13 @@ app.controller('myCtrl', function($scope, $http) {
           $scope.hcurso = "Curso";
           $scope.mensagem = "";
           $scope.alunos = reply.alunos;
-          } else {
-              $scope.clear();
-              $scope.mensagem = reply.resultado;
-            }
-         }
-      );
+        } 
+        else {
+          $scope.clear();
+          $scope.mensagem = reply.resultado;
+        }
+     }
+    );
       request.error(function(reply) {
          alert("Falha na requisicao");
       }
@@ -86,7 +87,7 @@ app.controller('myCtrl', function($scope, $http) {
           $scope.nome == undefined || $scope.nome.length == 0 ||
           $scope.curso == undefined || $scope.curso.length == 0) {
              $scope.clear();
-             $scope.mensagem = "preencha todos os campos acima";
+             $scope.mensagem = "Preencha todos os campos acima";
              return;
       }
       var data = {"ra": $scope.ra,
