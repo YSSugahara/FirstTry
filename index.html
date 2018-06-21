@@ -2,7 +2,9 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <body>
-
+<h1>TECOLES</h1>
+<p>Sistema de Teste de Competencia de Leitura Silenciosa</p>
+<br>
 <h1>Cadastro de Alunos</h1>
 
 <br>
@@ -56,8 +58,8 @@ app.controller('myCtrl', function($scope, $http) {
  };
   // ACESSA
   $scope.acessa = function() {
-     var url = "/alunos";
-     if ($scope.ra != undefined) url = "/alunos/" + $scope.ra;
+     var url = "/index";
+     if ($scope.ra != undefined) url = "/index/" + $scope.ra;
      var request = $http({
                  "method": "get",
                  "url": url});
@@ -95,7 +97,7 @@ app.controller('myCtrl', function($scope, $http) {
                   "curso": $scope.curso};
       var request = $http({
                  "method": "post",
-                 "url": "/alunos",
+                 "url": "/index",
                  "data": data});
       request.success(function(reply) {
         $scope.mensagem = reply.resultado;
@@ -121,7 +123,7 @@ app.controller('myCtrl', function($scope, $http) {
                  "curso": $scope.curso};
      var request = $http({
                  "method": "put",
-                 "url": "/alunos/" + $scope.ra,
+                 "url": "/index/" + $scope.ra,
                  "data": data});
      request.success(function(reply) {
          $scope.mensagem = reply.resultado;
@@ -142,7 +144,7 @@ app.controller('myCtrl', function($scope, $http) {
      }
      var request = $http({
                  "method": "delete",
-                 "url": "/alunos/" + $scope.ra});
+                 "url": "/index/" + $scope.ra});
      request.success(function(reply) {
          $scope.mensagem = reply.resultado;
        }

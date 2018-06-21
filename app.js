@@ -82,7 +82,7 @@ router.route('/')
    }
  );
 
-router.route('/alunos')   // operacoes sobre todos os alunos
+router.route('/index')   // operacoes sobre todos os alunos
  .get(function(req, res) {  // GET (encontra)
      if(! checkAuth(req, res)) return;
      var response = {};
@@ -127,17 +127,17 @@ router.route('/alunos')   // operacoes sobre todos os alunos
   );
 
 
-router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
+router.route('/index/:ra')   // operacoes sobre um aluno (RA)
   .get(function(req, res) {   // GET
      if(! checkAuth(req, res)) return;
       var response = {};
       var query = {"ra": req.params.ra};
       mongoOp.findOne(query, function(erro, data) {
          if(erro) {
-            response = {"Resultado": "falha de acesso ao Banco de Dados"};
+            response = {"Resultado": "Falha de acesso ao Banco de Dados"};
             res.json(response);
          } else if (data == null) {
-             response = {"Resultado": "aluno inexistente"};
+             response = {"Resultado": "Aluno inexistente"};
              res.json(response);   
    } else {
       response = {"alunos": [data]};
@@ -313,6 +313,112 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
              res.json(response);
             } else {
               response = {"Resultado": "Professor removido do Banco de Dados"};
+              res.json(response);
+     }
+         }
+       )
+     }
+);
+
+//alunos.html
+router.route('/alunos')   // operacoes sobre todos os alunos
+ .get(function(req, res) {  // GET (encontra)
+     if(! checkAuth(req, res)) return;
+     var response = {};
+     mongoOp.find({}, function(erro, data) {
+       if(erro)
+          response = {"Resultado": "Falha de acesso ao Banco de Dados"};
+        else
+          response = {"Alunos": data};
+          res.json(response);
+        }
+      )
+    }
+  )
+  .post(function(req, res) {   // POST (cria)
+     if(! checkAuth(req, res)) return;
+     console.log(JSON.stringify(req.body));
+     var query = {"ra": req.body.ra};
+     var response = {};
+     mongoOp.findOne(query, function(erro, data) {
+        if (data == null) {
+           var db = new mongoOp();
+           db.ra = req.body.ra;
+           db.nome = req.body.nome;
+           db.turma = req.body.turma;
+           db.save(function(erro) {
+             if(erro) {
+                 response = {"Resultado": "Falha de insercao no Banco de Dados"};
+                 res.json(response);
+             } else {
+                 response = {"Resultado": "Aluno inserido no Banco de Dados"};
+                 res.json(response);
+              }
+            }
+          )
+        } else {
+      response = {"Resultado": "Aluno ja existente"};
+            res.json(response);
+          }
+        }
+      )
+    }
+  );
+
+
+router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
+  .get(function(req, res) {   // GET
+     if(! checkAuth(req, res)) return;
+      var response = {};
+      var query = {"ra": req.params.ra};
+      mongoOp.findOne(query, function(erro, data) {
+         if(erro) {
+            response = {"Resultado": "Falha de acesso ao Banco de Dados"};
+            res.json(response);
+         } else if (data == null) {
+             response = {"Resultado": "Aluno inexistente"};
+             res.json(response);   
+   } else {
+      response = {"alunos": [data]};
+            res.json(response);
+           }
+        }
+      )
+    }
+  )
+  .put(function(req, res) {   // PUT (altera)
+      if(! checkAuth(req, res)) return;
+      var response = {};
+      var query = {"ra": req.params.ra};
+      var data = {"nome": req.body.nome, "turma": req.body.turma};
+      mongoOp.findOneAndUpdate(query, data, function(erro, data) {
+          if(erro) {
+            response = {"Resultado": "Falha de acesso ao DB"};
+            res.json(response);
+    } else if (data == null) { 
+             response = {"Resultado": "Aluno inexistente"};
+             res.json(response);   
+          } else {
+             response = {"Resultado": "Aluno atualizado no Banco de Dados"};
+             res.json(response);   
+    }
+        }
+      )
+    }
+  )
+  .delete(function(req, res) {   // DELETE (remove)
+     if(! checkAuth(req, res)) return;
+     var response = {};
+     var query = {"ra": req.params.ra};
+      mongoOp.findOneAndRemove(query, function(erro, data) {
+         if(erro) {
+            response = {"Resultado": "Falha de acesso ao DataBase"};
+            res.json(response);
+   } else if (data == null) {       
+             response = {"Resultado": "Aluno inexistente"};
+             res.json(response);
+            } else {
+              response = {"Resultado": "Aluno removido do Banco de Dados"};
               res.json(response);
      }
          }
