@@ -7,25 +7,30 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// adicione "ponteiro" para o MongoDB
+// Adicione "ponteiro" para o MongoDB
 var mongoOp = require('./models/mongo');
-// var mongoOp2 = require('./models/mongo2');
+var mongoOp2 = require('./models/mongo2');
 
-// comente as duas linhas abaixo
-// var index = require('./routes/index');
-// var users = require('./routes/users');
+// Ainda falta fazer esta parte
+// var mongoAlunos = require('/models/alunos');
+// var mongoProfessor = require('/models/professor');
+// var mongoQuestoes = require('/models/questoes');
+
+// Comente as duas linhas abaixo
+var index = require('./routes/index');
+var users = require('./routes/users');
 
 var app = express();
 
-// view engine setup
+// View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// serve static files
+// Serve static files
 app.use('/', express.static(__dirname + '/'));
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false }));
@@ -74,7 +79,7 @@ function checkAuth(req, res) {
 }
 
 // index.html
-router.route('/') 
+router.route('/')
  .get(function(req, res) {  // GET
    var path = 'index.html';
    res.header('Cache-Control', 'no-cache');
@@ -138,7 +143,7 @@ router.route('/index/:ra')   // operacoes sobre um aluno (RA)
             res.json(response);
          } else if (data == null) {
              response = {"Resultado": "Aluno inexistente"};
-             res.json(response);   
+             res.json(response);
    } else {
       response = {"alunos": [data]};
             res.json(response);
@@ -156,12 +161,12 @@ router.route('/index/:ra')   // operacoes sobre um aluno (RA)
           if(erro) {
             response = {"Resultado": "Falha de acesso ao DB"};
             res.json(response);
-    } else if (data == null) { 
+    } else if (data == null) {
              response = {"Resultado": "Aluno inexistente"};
-             res.json(response);   
+             res.json(response);
           } else {
              response = {"Resultado": "Aluno atualizado no Banco de Dados"};
-             res.json(response);   
+             res.json(response);
     }
         }
       )
@@ -175,7 +180,7 @@ router.route('/index/:ra')   // operacoes sobre um aluno (RA)
          if(erro) {
             response = {"Resultado": "Falha de acesso ao DataBase"};
             res.json(response);
-   } else if (data == null) {       
+   } else if (data == null) {
              response = {"Resultado": "Aluno inexistente"};
              res.json(response);
             } else {
@@ -195,7 +200,7 @@ router.route('/authentication')   // autenticação
      res.sendfile(path, {"root": "./"});
      }
   )
-  .post(function(req, res) { 
+  .post(function(req, res) {
      console.log(JSON.stringify(req.body));
      var user = req.body.user;
      var pass = req.body.pass;
@@ -271,12 +276,12 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
             res.json(response);
          } else if (data == null) {
              response = {"Resultado": "Professor inexistente"};
-             res.json(response);   
+             res.json(response);
    } else {
       response = {"Professor": [data]};
             res.json(response);
            }
-        } 
+        }
       )
     }
   )
@@ -289,12 +294,12 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
           if(erro) {
             response = {"Resultado": "Falha de acesso ao Data Base"};
             res.json(response);
-    } else if (data == null) { 
+    } else if (data == null) {
              response = {"Resultado": "Professor inexistente"};
-             res.json(response);   
+             res.json(response);
           } else {
              response = {"Resultado": "Professor atualizado no Banco de Dados"};
-             res.json(response);   
+             res.json(response);
     }
         }
       )
@@ -308,7 +313,7 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
          if(erro) {
             response = {"Resultado": "Falha de acesso ao Data Base"};
             res.json(response);
-   } else if (data == null) {       
+   } else if (data == null) {
              response = {"Resultado": "Professor inexistente"};
              res.json(response);
             } else {
@@ -377,7 +382,7 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
             res.json(response);
          } else if (data == null) {
              response = {"Resultado": "Aluno inexistente"};
-             res.json(response);   
+             res.json(response);
    } else {
       response = {"alunos": [data]};
             res.json(response);
@@ -395,12 +400,12 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
           if(erro) {
             response = {"Resultado": "Falha de acesso ao DB"};
             res.json(response);
-    } else if (data == null) { 
+    } else if (data == null) {
              response = {"Resultado": "Aluno inexistente"};
-             res.json(response);   
+             res.json(response);
           } else {
              response = {"Resultado": "Aluno atualizado no Banco de Dados"};
-             res.json(response);   
+             res.json(response);
     }
         }
       )
@@ -414,7 +419,7 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
          if(erro) {
             response = {"Resultado": "Falha de acesso ao DataBase"};
             res.json(response);
-   } else if (data == null) {       
+   } else if (data == null) {
              response = {"Resultado": "Aluno inexistente"};
              res.json(response);
             } else {
