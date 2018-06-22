@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+<h1><center>TECOLES</center></h1>
+<p><center>Sistema de Teste de Competencia de Leitura Silenciosa</center></p>
+<br>
+<h2>Autenticação de Professor</h2>
+
+<br>
+<div ng-app="myApp" ng-controller="myCtrl">
+  <form>
+    Usuário: <input type="text" ng-model="user"><br><br>
+    Senha: <input type="password" ng-model="pass"><br><br>
+    <button ng-click="doPost()">ENVIA</button>&nbsp;
+  </form>
+  <a href="/professor.html"><button>CADASTRAR</button></a>&nbsp;<br><br>
+  <a href="/home.html"><button>HOME</button></a>&nbsp;<br><br>
+  <b>Resultado:</b>&nbsp;{{result}}
+</div>
+
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+  // POST
+  $scope.doPost = function() {
+     $scope.result = "";
+     var url = "/authentication";
+     var data = {"user": $scope.user, "pass": $scope.pass};
+     var request = $http({
+                 "method": "post",
+                 "url": url,
+                 "data": data});
+     request.success(function(reply, status) {
+        $scope.result = "Sucesso";
+        window.open("/area-professor", "_blank");
+        }
+      );
+      request.error(function(reply, status) {
+        $scope.result = "Falha na autenticação";
+       }
+     );
+   };
+  }
+);
+</script>
+
+</body>
+</html>

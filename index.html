@@ -2,8 +2,8 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <body>
-<h1>TECOLES</h1>
-<p>Sistema de Teste de Competencia de Leitura Silenciosa</p>
+<h1><center>TECOLES</center></h1>
+<p><center>Sistema de Teste de Competencia de Leitura Silenciosa</center></p>
 <br>
 <h1>Cadastro de Alunos</h1>
 
@@ -24,7 +24,7 @@
 
   <br><br>
   Resultado: {{mensagem}}
-  
+
   <br><br>
   <table cellspacing="8">
     <tr> <th>{{hra}}</th>  <th>{{hnome}}</th>  <th>{{hcurso}}</th> </tr>
@@ -70,7 +70,7 @@ app.controller('myCtrl', function($scope, $http) {
           $scope.hcurso = "Curso";
           $scope.mensagem = "";
           $scope.alunos = reply.alunos;
-        } 
+        }
         else {
           $scope.clear();
           $scope.mensagem = reply.resultado;
@@ -162,7 +162,7 @@ app.controller('myCtrl', function($scope, $http) {
     }
   }
 );
-</script> 
+</script>
 
 </body>
 </html>
