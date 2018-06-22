@@ -9,16 +9,15 @@ var bodyParser = require('body-parser');
 
 // Adicione "ponteiro" para o MongoDB
 var mongoOp = require('./models/mongo');
-var mongoOp2 = require('./models/mongo2');
+var mongoAlunos = require('./models/alunos');
+var mongoProfessor = require('./models/professor');
+var mongoQuestoes = require('./models/questoes');
+var mongoImagens = require('./models/imagens');
+var mongoTeste = require('./models/testes');
 
-// Ainda falta fazer esta parte
-// var mongoAlunos = require('/models/alunos');
-// var mongoProfessor = require('/models/professor');
-// var mongoQuestoes = require('/models/questoes');
-
-// Comente as duas linhas abaixo
-var index = require('./routes/index');
-var users = require('./routes/users');
+// Comente as duas linhas
+//var index = require('./routes/index');
+//var users = require('./routes/users');
 
 var app = express();
 
@@ -224,7 +223,7 @@ router.route('/professor')   // operacoes sobre todos os professores
  .get(function(req, res) {  // GET
      if(! checkAuth(req, res)) return;
      var response = {};
-     mongoOp.find({}, function(erro, data) {
+     mongoProfessor.find({}, function(erro, data) {
        if(erro)
           response = {"Resultado": "Falha de acesso ao Banco de Dados"};
         else
@@ -239,7 +238,7 @@ router.route('/professor')   // operacoes sobre todos os professores
      console.log(JSON.stringify(req.body));
      var query = {"nome": req.body.nome};
      var response = {};
-     mongoOp.findOne(query, function(erro, query) {
+     mongoProfessor.findOne(query, function(erro, query) {
         if (query == null) {
            var db = new mongoOp();
            db.nome = req.body.nome;
@@ -270,7 +269,7 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
       var response = {};
       var query = {"nome": req.params.nome};
       var data = {"turma": req.body.turma};
-      mongoOp.findOneAndUpdate(query, data, function(erro, data) {
+      mongoProfessor.findOneAndUpdate(query, data, function(erro, data) {
          if(erro) {
             response = {"Resultado": "Falha de acesso ao Banco de Dados"};
             res.json(response);
@@ -290,7 +289,7 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
       var response = {};
       var query = {"nome": req.params.nome};
       var data = {"turma": req.body.turma};
-      mongoOp.findOneAndUpdate(query, data, function(erro, data) {
+      mongoProfessor.findOneAndUpdate(query, data, function(erro, data) {
           if(erro) {
             response = {"Resultado": "Falha de acesso ao Data Base"};
             res.json(response);
@@ -309,7 +308,7 @@ router.route('/professor/:nome')   // operacoes sobre um professor (nome)
      if(! checkAuth(req, res)) return;
      var response = {};
      var query = {"nome": req.params.nome};
-      mongoOp.findOneAndRemove(query, function(erro, data) {
+      mongoProfessor.findOneAndRemove(query, function(erro, data) {
          if(erro) {
             response = {"Resultado": "Falha de acesso ao Data Base"};
             res.json(response);
@@ -330,7 +329,7 @@ router.route('/alunos')   // operacoes sobre todos os alunos
  .get(function(req, res) {  // GET (encontra)
      if(! checkAuth(req, res)) return;
      var response = {};
-     mongoOp.find({}, function(erro, data) {
+     mongoAlunos.find({}, function(erro, data) {
        if(erro)
           response = {"Resultado": "Falha de acesso ao Banco de Dados"};
         else
@@ -345,7 +344,7 @@ router.route('/alunos')   // operacoes sobre todos os alunos
      console.log(JSON.stringify(req.body));
      var query = {"ra": req.body.ra};
      var response = {};
-     mongoOp.findOne(query, function(erro, data) {
+     mongoAlunos.findOne(query, function(erro, data) {
         if (data == null) {
            var db = new mongoOp();
            db.ra = req.body.ra;
@@ -376,7 +375,7 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
      if(! checkAuth(req, res)) return;
       var response = {};
       var query = {"ra": req.params.ra};
-      mongoOp.findOne(query, function(erro, data) {
+      mongoAlunos.findOne(query, function(erro, data) {
          if(erro) {
             response = {"Resultado": "Falha de acesso ao Banco de Dados"};
             res.json(response);
@@ -396,7 +395,7 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
       var response = {};
       var query = {"ra": req.params.ra};
       var data = {"nome": req.body.nome, "turma": req.body.turma};
-      mongoOp.findOneAndUpdate(query, data, function(erro, data) {
+      mongoAlunos.findOneAndUpdate(query, data, function(erro, data) {
           if(erro) {
             response = {"Resultado": "Falha de acesso ao DB"};
             res.json(response);
@@ -415,7 +414,7 @@ router.route('/alunos/:ra')   // operacoes sobre um aluno (RA)
      if(! checkAuth(req, res)) return;
      var response = {};
      var query = {"ra": req.params.ra};
-      mongoOp.findOneAndRemove(query, function(erro, data) {
+      mongoAlunos.findOneAndRemove(query, function(erro, data) {
          if(erro) {
             response = {"Resultado": "Falha de acesso ao DataBase"};
             res.json(response);

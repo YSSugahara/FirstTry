@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+<h1><center>TECOLES</center></h1>
+<p><center>Sistema de Teste de Competência de Leitura Silenciosa</center></p>
+<br>
+
+<h1><center>Fazer Teste</center></h1>
+<br>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+  <form><center>
+
+    <center>
+      <a href = "./imagens/cachorro.png">
+        <img src="./imagens/cachorro.png" alt="Cachorro">
+      </a>
+    </center>
+
+    <br><br>
+
+    <button ng-click="doCachorro()">CACHORRO</button>&nbsp;
+    <button ng-click="doGato()">GATO</button>&nbsp;
+    <button ng-click="doPassaro()">PÁSSARO</button>&nbsp;
+    <button ng-click="doPeixe()">PEIXE</button>&nbsp;
+    <button ng-click="doCoelho()">COELHO</button>&nbsp;
+  </center></form>
+  <br><br>
+
+  <center><b>Resultado:</b>&nbsp;{{result}}</center>
+</div>
+<br><br>
+
+<a href="area-aluno.html"><center><button>AREA DO ALUNO</button></center></a>
+
+<br>
+
+<!--div ng-app="myApp" ng-controller="myCtrl">
+    <a href="/auth-alunos.html"><center><button> ALUNO </button></a>&nbsp;
+    <a href="/auth-professor.html"><button> PROFESSOR </button></center></a>&nbsp;
+</div-->
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+  $scope.doCachorro = function(){
+    if(window.confirm("Está certo disso?")){
+      
+    }
+  }
+
+}
+);
+
+</script>
+
+</body>
+</html>
