@@ -56,7 +56,7 @@ CAPOVILLA A.G.S., CAPOVILLA F.C.. Alfabetização: método fônico. 4ª ed. São
 ## Professor
 Eleri Cardoso
 
-##Link da disciplina
+## Link da disciplina
 ```
 http://calhau.dca.fee.unicamp.br/wiki/index.php/EA975/KL:2018_1S
 ```
