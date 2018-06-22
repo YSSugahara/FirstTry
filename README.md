@@ -43,9 +43,16 @@ npm start
 E acesse o endereço:
 
 ```
-http://localhost:3000/professor.html
+http://localhost:3000/home.html
 ```
 
 ## Referências
 CAPOVILLA A.G.S., CAPOVILLA F.C.. Alfabetização: método fônico. 4ª ed. São Paulo: Memnon Edições Científicas; 2007.
 # FirstTry
+
+## EA975
+# Grupo 1
+
+Eduardo Sakai
+Gabriela Shima
+Yuji Sugahara
